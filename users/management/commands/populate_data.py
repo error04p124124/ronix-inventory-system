@@ -40,9 +40,8 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS('Database populated successfully!'))
         self.stdout.write(self.style.SUCCESS(''))
         self.stdout.write(self.style.SUCCESS('Test users created:'))
-        self.stdout.write(self.style.SUCCESS('  Admin: admin / admin123 (Администратор)'))
-        self.stdout.write(self.style.SUCCESS('  Worker: worker / worker123 (Работник)'))
-        self.stdout.write(self.style.SUCCESS('  Client: client / client123 (Клиент)'))
+        self.stdout.write(self.style.SUCCESS('  Worker: worker / worker123 (Полный доступ)'))
+        self.stdout.write(self.style.SUCCESS('  Client: client / client123 (Минимальный доступ)'))
 
     def create_groups(self):
         Group.objects.get_or_create(name='Клиенты')
@@ -50,24 +49,25 @@ class Command(BaseCommand):
         self.stdout.write('✓ Groups created')
 
     def create_users(self):
-        # Суперпользователь (администратор)
-        admin, created = User.objects.get_or_create(
-            username='admin',
+        # Работник (полный доступ к системе)
+        worker, created = User.objects.get_or_create(
+            username='worker',
             defaults={
-                'email': 'admin@ronix-l.ru',
-                'first_name': 'Администратор',
-                'last_name': 'Системы',
+                'email': 'worker@ronix-l.ru',
+                'first_name': 'Петр',
+                'last_name': 'Работников',
                 'role': 'worker',
-                'phone': '+7 (999) 000-00-00',
+                'phone': '+7 (999) 222-33-44',
+                'address': 'г. Москва, ул. Рабочая, д. 20',
                 'is_superuser': True,
                 'is_staff': True,
             }
         )
         if created:
-            admin.set_password('admin123')
-            admin.save()
+            worker.set_password('worker123')
+            worker.save()
         
-        # Клиент
+        # Клиент (минимальный доступ)
         client, created = User.objects.get_or_create(
             username='client',
             defaults={
@@ -82,22 +82,6 @@ class Command(BaseCommand):
         if created:
             client.set_password('client123')
             client.save()
-        
-        # Работник
-        worker, created = User.objects.get_or_create(
-            username='worker',
-            defaults={
-                'email': 'worker@ronix-l.ru',
-                'first_name': 'Петр',
-                'last_name': 'Работников',
-                'role': 'worker',
-                'phone': '+7 (999) 222-33-44',
-                'address': 'г. Москва, ул. Рабочая, д. 20',
-            }
-        )
-        if created:
-            worker.set_password('worker123')
-            worker.save()
         
         self.stdout.write('✓ Users created')
 
