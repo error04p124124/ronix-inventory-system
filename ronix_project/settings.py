@@ -152,7 +152,6 @@ LOGOUT_REDIRECT_URL = 'core:home'
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap5.html"
 
 # Email settings
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
@@ -160,6 +159,11 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
+EMAIL_TIMEOUT = 10  # Таймаут для SMTP соединения (секунды)
 
-# Для разработки можно использовать консольный бэкенд:
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# Автоматический выбор email backend
+if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+else:
+    # Если email не настроен, используем console backend (не вызывает ошибок)
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
