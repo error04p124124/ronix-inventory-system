@@ -6,6 +6,6 @@ builder = "NIXPACKS"
 nixpacksPlan = { setup = ["pip install -r requirements.txt"], buildImage = "python:3.11" }
 
 [deploy]
-startCommand = "python manage.py migrate && python manage.py collectstatic --noinput && python manage.py populate_data && gunicorn ronix_project.wsgi --timeout 120 --workers 2"
+startCommand = "python manage.py migrate && python manage.py collectstatic --noinput && gunicorn ronix_project.wsgi --timeout 120 --workers 2"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
