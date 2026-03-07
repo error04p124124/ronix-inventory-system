@@ -29,7 +29,6 @@ function initAnimations() {
             if (entry.isIntersecting) {
                 setTimeout(() => {
                     entry.target.classList.add('fade-in-up');
-                    entry.target.style.opacity = '1';
                 }, index * 100);
             }
         });
@@ -39,7 +38,7 @@ function initAnimations() {
     });
     
     animatedElements.forEach(element => {
-        element.style.opacity = '0';
+        // Don't hide elements initially - just observe them
         observer.observe(element);
     });
 }
