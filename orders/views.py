@@ -55,10 +55,6 @@ def order_create(request):
             order.client = request.user
             order.save()
             
-            # Отправляем уведомление всем работникам о новой заявке
-            from core.notifications import notify_new_order
-            notify_new_order(order)
-            
             messages.success(request, 'Заявка успешно создана!')
             return redirect('orders:order_detail', pk=order.pk)
     else:
@@ -76,18 +72,12 @@ def order_edit(request, pk):
         return redirect('orders:order_list')
     
     order = get_object_or_404(Order, pk=pk)
-    old_assigned_to = order.assigned_to  # Сохраняем старое значение
     
     if request.method == 'POST':
         form = OrderUpdateForm(request.POST, instance=order)
         
         if form.is_valid():
             order = form.save()
-            
-            # Проверяем, был ли назначен новый ответственный
-            if order.assigned_to and order.assigned_to != old_assigned_to:
-                from core.notifications import notify_order_assigned
-                notify_order_assigned(order)
             
             messages.success(request, 'Заявка успешно обновлена!')
             return redirect('orders:order_detail', pk=pk)
