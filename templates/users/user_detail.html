@@ -6,16 +6,16 @@
 <div class="container">
     <div class="row">
         <div class="col-lg-8 mx-auto">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                    <h3 class="mb-0">
+            <div class="card shadow-sm" style="border: 1px solid rgba(0, 0, 0, 0.08);">
+                <div class="card-header d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); border-bottom: 2px solid rgba(44, 62, 80, 0.2);">
+                    <h3 class="mb-0 text-white">
                         <i class="bi bi-person-circle"></i> {{ user_obj.username }}
                     </h3>
                     <a href="{% url 'users:user_edit' user_obj.pk %}" class="btn btn-light btn-sm">
                         <i class="bi bi-pencil"></i> Редактировать
                     </a>
                 </div>
-                <div class="card-body p-4">
+                <div class="card-body p-4" style="background: #ffffff;">
                     <div class="row mb-3">
                         <div class="col-md-4 fw-bold">Имя пользователя:</div>
                         <div class="col-md-8">{{ user_obj.username }}</div>
